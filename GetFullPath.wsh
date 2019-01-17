@@ -1,0 +1,30 @@
+Option Explicit
+
+If Wscript.Arguments.Count = 0 Then
+  MsgBox "ファイルをドラッグ＆ドロップしてください。"
+  Wscript.Quit
+End If
+
+Dim objFso
+Set objFso = CreateObject("Scripting.FileSystemObject")
+
+Dim i
+For i = 0 To Wscript.Arguments.Count - 1
+  PutInClipboardText(Wscript.Arguments.Item(i))
+  MsgBox "Full path: "   & Wscript.Arguments.Item(i)
+  'MsgBox "File name: " & objFso.GetFileName(Wscript.Arguments.Item(i))
+Next
+
+Set objFso = Nothing
+
+'- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+' Function : 	引数の文字列をクリップボードにコピー
+' Arguments :	コピーする文字列
+' Returns :		なし
+' Remarks :		
+'- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Sub PutInClipboardText(ByVal str)
+    Dim cmd
+    cmd = "cmd /c ""echo " & str & "| clip"""
+    CreateObject("WScript.Shell").Run cmd, 0
+End Sub
